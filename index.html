@@ -421,18 +421,24 @@
   .status-badge.closed{background:rgba(201,96,96,.12);color:#b25353;}
   .status-badge .dot-ind{width:7px;height:7px;border-radius:50%;background:currentColor;}
   .schedule-row{
-    display:flex;justify-content:space-between;align-items:center;
+    display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;
+    row-gap:4px;column-gap:12px;
     padding:11px 0;border-bottom:1px dashed var(--line);font-size:.92rem;
   }
   .schedule-row:last-child{border-bottom:none;}
-  .schedule-row .day{color:var(--ink);font-weight:500;}
-  .schedule-row .hours{color:var(--ink-muted);font-variant-numeric:tabular-nums;}
+  .schedule-row .day{color:var(--ink);font-weight:500;flex:1 1 auto;min-width:0;}
+  .schedule-row .hours{color:var(--ink-muted);font-variant-numeric:tabular-nums;flex:0 0 auto;white-space:nowrap;margin-left:auto;}
   .schedule-row.today{
     background:linear-gradient(90deg, rgba(201,161,91,.08), transparent);
     border-radius:8px;margin:0 -12px;padding:11px 12px;
   }
   .schedule-row.today .day{color:var(--gold-deep);font-weight:700;}
-  .schedule-row.today .day::after{content:'· сегодня';font-size:.68rem;font-weight:500;color:var(--gold-deep);margin-left:8px;text-transform:uppercase;letter-spacing:.04em;}
+  .today-tag{
+    display:none;font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--gold-deep);background:rgba(201,161,91,.16);
+    padding:3px 9px;border-radius:100px;margin-left:8px;white-space:nowrap;
+  }
+  .schedule-row.today .today-tag{display:inline-block;}
   .booking-card{
     background:var(--charcoal);border-radius:24px;padding:52px 44px;color:#fff;text-align:center;
     position:relative;overflow:hidden;
@@ -473,28 +479,62 @@
     .burger{display:block;}
   }
   @media (max-width:640px){
+    .container{padding:0 20px;}
     .features-grid{grid-template-columns:1fr;}
     .service-grid{grid-template-columns:1fr;}
-    .hero-meta{gap:20px;}
+    .hero-meta{gap:14px 20px;}
     .footer-top,.footer-bottom{justify-content:center;text-align:center;}
+
+    .logo{font-size:1.1rem;}
+    .header-actions{gap:12px;}
+    .btn-small{padding:9px 16px;font-size:.68rem;}
+
+    .hero{padding:140px 20px 80px;}
+    .hero-badge{font-size:.82rem;padding:8px 16px;text-align:center;border-radius:18px;max-width:100%;}
+    .hero-meta{justify-content:center;}
+    .hero-meta .item{font-size:.82rem;}
 
     .tabs{
       flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;
-      padding-bottom:6px;margin:0 -24px 40px;padding-left:24px;padding-right:24px;
+      padding-bottom:6px;margin:0 -20px 40px;padding-left:20px;padding-right:20px;
       -webkit-overflow-scrolling:touch;scrollbar-width:none;
     }
     .tabs::-webkit-scrollbar{display:none;}
     .tab-btn{white-space:nowrap;}
 
     .service-card{
-      flex-direction:column;align-items:flex-start;gap:8px;padding:18px 20px;
+      align-items:flex-start;padding:16px 18px;gap:10px;
     }
-    .service-card .price{align-self:flex-end;margin-top:-26px;}
+    .service-card .name{font-size:.88rem;padding-top:2px;}
+    .service-card .price{white-space:nowrap;font-size:.95rem;}
 
     .gallery-grid{grid-template-columns:1fr;grid-template-rows:none;}
     .gallery-grid .g-item{height:220px;}
     .gallery-grid .g-item:nth-child(1){grid-row:auto;height:280px;}
+
+    .review-card{padding:38px 24px;}
+    .review-card p{font-size:1.05rem;}
+    .review-card .quote-mark{font-size:2.6rem;}
+    .carousel-arrows{gap:12px;}
+
+    .schedule-card{padding:20px 20px;}
+    .schedule-row{font-size:.86rem;}
+    .today-tag{font-size:.56rem;padding:2px 7px;}
+
+    .booking-card{padding:36px 26px;}
+    .booking-card h3{font-size:1.4rem;}
+
+    .info-row{padding:14px 0;}
+    .info-row .ico{width:36px;height:36px;font-size:.92rem;}
   }
+  @media (max-width:400px){
+    .neon-title{font-size:2.5rem;}
+    .stats .container{grid-template-columns:1fr 1fr;gap:16px 20px;}
+    .stat b{font-size:1.7rem;}
+    .schedule-row{flex-direction:column;align-items:flex-start;gap:2px;}
+    .schedule-row .hours{margin-left:0;}
+  }
+
   @media (max-width:980px) and (min-width:641px){
     .gallery-grid{grid-template-rows:220px 220px;}
   }
@@ -736,9 +776,9 @@
             <b>График работы</b>
             <span class="status-badge" id="statusBadge"><span class="dot-ind"></span><span id="statusText">—</span></span>
           </div>
-          <div class="schedule-row" data-days="1,2,3,4,5"><span class="day">Понедельник — пятница</span><span class="hours">10:00 – 19:00</span></div>
-          <div class="schedule-row" data-days="6"><span class="day">Суббота</span><span class="hours">10:00 – 18:00</span></div>
-          <div class="schedule-row" data-days="0"><span class="day">Воскресенье</span><span class="hours">выходной</span></div>
+          <div class="schedule-row" data-days="1,2,3,4,5"><span class="day">Понедельник — пятница<span class="today-tag">Сегодня</span></span><span class="hours">10:00 – 19:00</span></div>
+          <div class="schedule-row" data-days="6"><span class="day">Суббота<span class="today-tag">Сегодня</span></span><span class="hours">10:00 – 18:00</span></div>
+          <div class="schedule-row" data-days="0"><span class="day">Воскресенье<span class="today-tag">Сегодня</span></span><span class="hours">выходной</span></div>
         </div>
       </div>
       <div class="booking-card">
